@@ -72,8 +72,6 @@ class ControlPanel {
                 <div id="${this.element.id}-model-close">Close</div>
             </div>
             <button id="${this.element.id}-add-div">Add Div</button>
-            <button id="${this.element.id}-add-span">Add Span</button>
-            <button id="${this.element.id}-add-img">Add Image</button>
         `;
         modalContent.appendChild(addElementsSection);
 
@@ -113,13 +111,9 @@ class ControlPanel {
     // Bind events to the control panel
     bindControlEvents() {
         const addDivBtn = document.getElementById(this.element.id+'-add-div');
-        const addSpanBtn = document.getElementById(this.element.id+'-add-span');
-        const addImgBtn = document.getElementById(this.element.id+'-add-img');
 
         // Add Div, Span, and Img elements
         addDivBtn.addEventListener('click', () => this.addElement('div'));
-        addSpanBtn.addEventListener('click', () => this.addElement('span'));
-        addImgBtn.addEventListener('click', () => this.addElement('img'));
     }
 
     // Dynamically add elements to the parent (or selected element)
@@ -715,6 +709,10 @@ class BorderCurve {
         document.removeEventListener('mousemove', this.changeBorderCurve);
         document.removeEventListener('mouseup', this.stopBorderCurve);
     }
+}
+
+class RenderInCanvas {
+    
 }
 
 
