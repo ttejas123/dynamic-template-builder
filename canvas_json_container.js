@@ -40,7 +40,7 @@ const AddFeatureIntoCanvasJSON = ({parent_id, element_id, payload, gen_name}) =>
     } else {
         CanvasJSON[parent_id] = {
             children: [element_id],
-            payload: [],
+            payload: [{parentId: element_id}],
             gen_name: null,
             element_id: null,
             parent_id: parent_id

@@ -53,7 +53,6 @@ class ControlPanel {
                 <h3>Add Element</h3>
                 <div id="${this.element.id}-model-close">Close</div>
             </div>
-            <button id="${this.element.id}-add-div">Add Div</button>
         `;
         modalContent.appendChild(addElementsSection);
 
@@ -70,8 +69,8 @@ class ControlPanel {
         // this.TextAndColorController = new TextAndColorController(this.element, this.parent, modal);
         this.Features = new Features(this.element, this.parent, modal);
         // this.FontController = new FontController(this.element, this.parent, modal);
-        this.bindControlEvents()
 
+        this.injectReqMutationEventAndFuntions();
         // apply style button and event
         const applyButton = document.createElement('button');
         applyButton.textContent = 'Apply Styles';
@@ -91,25 +90,6 @@ class ControlPanel {
         this.modal.style.display = 'none';
     }
 
-    // Bind events to the control panel
-    bindControlEvents() {
-        const addDivBtn = document.getElementById(this.element.id+'-add-div');
-
-        // Add Div, Span, and Img elements
-        addDivBtn.addEventListener('click', () => this.addElement('div'));
-    }
-
-    // Dynamically add elements to the parent (or selected element)
-    addElement(type) {
-        const newElement = document.createElement(type);
-        newElement.id = 'element-' + elementCounter++;
-        // Attach new element to the current selected parent
-        this.selectedElement.appendChild(newElement);
-    
-        // Attach the element to the engine
-        new ElementEngine(newElement, this.selectedElement);
-    }
-
     // Update the selected element and rebind controls to the new element
     updateSelectedElement(element) {
         this.selectedElement = element;
@@ -120,6 +100,22 @@ class ControlPanel {
 
         widthRange.value = parseInt(window.getComputedStyle(element).width);
         heightRange.value = parseInt(window.getComputedStyle(element).height);
+    }
+
+    // get input from element
+    injectReqMutationEventAndFuntions() {
+        const modal = document.getElementById(this.element.id+'-control-modal');
+        const ele = CanvasJSON[this.element.id];
+        if(ele && Array.isArray(ele.payload) && ele.payload.length > 0) {
+            const payload = ele.payload;
+            const labels = Object.keys(payload[0]);
+            labels.map((label)=> {
+                const unique_id = label+"-"+this.element.id;
+                createInput(label, 'text', unique_id, modal, null, null, (e)=> {
+                    ele.payload[0][label] = e
+                });
+            })
+        }
     }
 }
 
@@ -154,9 +150,7 @@ class ElementEngine {
     const canvas = document.getElementById(canvas_id);
     const newElement = document.createElement('div');
     newElement.id = 'element-' + elementCounter++;
-    AddFeatureIntoCanvasJSON({parent_id: "result", gen_name: "addElement", element_id: newElement.id, payload:[]})
-    // newElement.textContent = type;
+    AddFeatureIntoCanvasJSON({parent_id: "result", gen_name: "addElement", element_id: newElement.id, payload:[{parentId: newElement.id}]})
     canvas.appendChild(newElement);
-    // Attach the element to the engine
     new ElementEngine(newElement, canvas);
 })()

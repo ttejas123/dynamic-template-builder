@@ -591,16 +591,26 @@ class Features {
         this.model.appendChild(this.container);
 
         document.getElementById(`${this.element.id}-add-avatar`).addEventListener('click', ()=> {
-            const newElement = ComponentRegistry.createAvatar(this.element.id, 'https://cdn.pixabay.com/photo/2024/05/27/08/21/fantasy-8790369_1280.jpg', '30px');
+            const payload = {
+                imgUrl: 'https://cdn.pixabay.com/photo/2024/05/27/08/21/fantasy-8790369_1280.jpg',
+                parentId: this.element.id,
+                size: '30px'
+            }
+            const newElement = ComponentRegistry.createAvatar(payload);
             newElement.id = 'element-' + elementCounter++;
-            AddFeatureIntoCanvasJSON({element_id: newElement.id, gen_name: "createAvatar", parent_id: this.element.id, payload: [this.element.id, 'https://cdn.pixabay.com/photo/2024/05/27/08/21/fantasy-8790369_1280.jpg', '30px']})
+            AddFeatureIntoCanvasJSON({element_id: newElement.id, gen_name: "createAvatar", parent_id: this.element.id, payload: [payload]})
             new ElementEngine(newElement, this.element);
         })
 
         document.getElementById(`${this.element.id}-add-card`).addEventListener('click', ()=> {
-            const newElement = ComponentRegistry.createCard(this.element.id, 'Card Title', 'This is the content of the card.');
+            const payload = {
+                content: 'This is the content of the card.',
+                parentId: this.element.id,
+                title: 'Card Title'
+            }
+            const newElement = ComponentRegistry.createCard(payload);
             newElement.id = 'element-' + elementCounter++;
-            AddFeatureIntoCanvasJSON({element_id: newElement.id, gen_name: "createCard",parent_id: this.element.id, payload: [this.element.id, 'Card Title', 'This is the content of the card.']})
+            AddFeatureIntoCanvasJSON({element_id: newElement.id, gen_name: "createCard", parent_id: this.element.id, payload: [payload]})
             new ElementEngine(newElement, this.element);
         })
 
@@ -609,41 +619,47 @@ class Features {
                 { Name: 'John Doe', Age: 28, Country: 'USA' },
                 { Name: 'Jane Smith', Age: 32, Country: 'UK' }
             ];
-            const newElement = ComponentRegistry.createDataTable(this.element.id, data);
+            const payload = {
+                parentId: this.element.id, 
+                data
+            }
+            const newElement = ComponentRegistry.createDataTable(payload);
             newElement.id = 'element-' + elementCounter++;
-            AddFeatureIntoCanvasJSON({element_id: newElement.id, gen_name: "createDataTable", parent_id: this.element.id, payload: [this.element.id, data]})
+            AddFeatureIntoCanvasJSON({element_id: newElement.id, gen_name: "createDataTable", parent_id: this.element.id, payload: [payload]})
             new ElementEngine(newElement, this.element);
         })
 
         document.getElementById(`${this.element.id}-add-search-box`).addEventListener('click', ()=> {
-            const newElement = ComponentRegistry.createSearchBox(this.element.id, 
-                'Search...', 
-                (query) => {
+            const payload = {
+                onSearch: (query) => {
                     console.log('Search query:', query);
-                }
-            );
+                },
+                parentId: this.element.id,
+                placeholder: 'Search...'
+            }
+            const newElement = ComponentRegistry.createSearchBox(payload);
             newElement.id = 'element-' + elementCounter++;
-            AddFeatureIntoCanvasJSON({element_id: newElement.id, gen_name: "createSearchBox", parent_id: this.element.id, payload: [
-                this.element.id, 
-                'Search...', 
-                (query) => {
-                    console.log('Search query:', query);
-                }
-            ]})
+            AddFeatureIntoCanvasJSON({element_id: newElement.id, gen_name: "createSearchBox", parent_id: this.element.id, payload: [payload]})
             new ElementEngine(newElement, this.element);
         })
 
         document.getElementById(`${this.element.id}-add-heading`).addEventListener('click', ()=> {
-            const newElement = ComponentRegistry.createHeading(this.element.id, 'Welcome to My Site', 3);
+            const payload = {
+                level: 3,
+                parentId: this.element.id,
+                text: "Welcome to My Site"
+            }
+            const newElement = ComponentRegistry.createHeading(payload);
             newElement.id = 'element-' + elementCounter++;
-            AddFeatureIntoCanvasJSON({element_id: newElement.id, gen_name: "createHeading", parent_id: this.element.id, payload: [this.element.id, 'Welcome to My Site', 3]})
+            AddFeatureIntoCanvasJSON({element_id: newElement.id, gen_name: "createHeading", parent_id: this.element.id, payload: [payload]})
             new ElementEngine(newElement, this.element);
         })
         
         document.getElementById(`${this.element.id}-add-element`).addEventListener('click', ()=> {
-            const newElement = ComponentRegistry.addElement(this.element.id);
+            const payload = {parentId: this.element.id}
+            const newElement = ComponentRegistry.addElement(payload);
             newElement.id = 'element-' + elementCounter++;
-            AddFeatureIntoCanvasJSON({element_id: newElement.id, gen_name: "addElement", parent_id: this.element.id, payload: [this.element.id]})
+            AddFeatureIntoCanvasJSON({element_id: newElement.id, gen_name: "addElement", parent_id: this.element.id, payload: [payload]})
             new ElementEngine(newElement, this.element);
         })
     }

@@ -237,10 +237,10 @@ function createEventAction(element_id, action, func_type, func_exec) {
 }
 
 const ComponentRegistry = {
-    createCard: (parentId, title, content) => createCard(parentId, title, content),
-    createAvatar: (parentId, imgUrl, size) => createAvatar(parentId, imgUrl, size),
-    createDataTable: (parentId, data) => createDataTable(parentId, data),
-    createSearchBox: (parentId, placeholder, onSearch) => createSearchBox(parentId, placeholder, onSearch),
-    createHeading: (parentId, text, level) => createHeading(parentId, text, level),
-    addElement: (parentId) => addElement(parentId),
+    createCard: ({parentId, title, content}) => createCard(parentId, title, content),
+    createAvatar: ({parentId, imgUrl, size}) => createAvatar(parentId, imgUrl, size),
+    createDataTable: ({parentId, data}) => createDataTable(parentId, data),
+    createSearchBox: ({parentId, placeholder, onSearch}) => createSearchBox(parentId, placeholder, onSearch),
+    createHeading: ({parentId, text, level}) => createHeading(parentId, text, level),
+    addElement: ({parentId}) => addElement(parentId),
 };

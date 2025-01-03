@@ -43,6 +43,7 @@ function serializeDomTree(element) {
 const RenderInCanvasExV2 = (element_id)=> {
     const json_data = CanvasJSON[element_id];
     const parent_id = json_data.parent_id; 
+    console.log("json_data.payload --> ", json_data.payload);
     
     const element = ComponentRegistry[json_data.gen_name](...json_data.payload);
     element.id = element_id;
@@ -55,8 +56,12 @@ const RenderInCanvasExV2 = (element_id)=> {
 }
 
 function exportDomTreeV2(id) {
+    const result = document.createElement("div");
+    result.id = "result";
+    result.style = "width: 100%; height: 100vh;";
+    document.getElementsByTagName('body')[0].appendChild(result);
     getSerialPropertiesOfElement(id);
-    console.log("CanvasJSON --> ", CanvasJSON)
+    console.log("CanvasJSON --> ", CanvasJSON);
     const canvas = document.getElementById("canvas")
     if(canvas) canvas.remove();
     RenderInCanvasExV2(id)
