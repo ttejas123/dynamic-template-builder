@@ -1,5 +1,3 @@
-let elementCounter = 0;
-
 class ExportElement {
     constructor(element, parent, model) {
         this.element = element;

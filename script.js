@@ -1,3 +1,4 @@
+let elementCounter = 0;
 class ControlPanel {
     constructor(element, parent) {
         this.parent = parent;
@@ -142,7 +143,42 @@ class ElementEngine {
     }
 }
 
-(()=> {
+function loadScript(url) {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = url;
+      script.type = 'text/javascript';
+      script.async = true; // This will load the script asynchronously
+  
+      script.onload = () => {
+        console.log(`Script loaded: ${url}`);
+        resolve();
+      };
+      
+      script.onerror = () => {
+        console.error(`Failed to load script: ${url}`);
+        reject();
+      };
+  
+      document.head.appendChild(script);
+    });
+  }
+  
+  // URLs of scripts to load
+const scriptUrls = [
+    window.location.origin+"/featuers.js",
+    window.location.origin+"/registry.js",
+    window.location.origin+"/canvas_json_container.js",
+    window.location.origin+"/render.js",
+    window.location.origin+"/script.js"
+];
+  
+async function loadAllScriptsConcurrently() {
+    return await Promise.all(scriptUrls.map(url => loadScript(url)))
+}
+
+(async ()=> {
+    await loadAllScriptsConcurrently();
     const canvas_id = document.getElementById("dynamic-ui-gen").dataset.generetorid;
     const element = document.createElement('div');
     element.id = canvas_id;
