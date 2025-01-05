@@ -44,8 +44,16 @@ const RenderInCanvasExV2 = (element_id)=> {
     const json_data = CanvasJSON[element_id];
     const parent_id = json_data.parent_id; 
     console.log("json_data.payload --> ", json_data.payload);
-    
-    const element = ComponentRegistry[json_data.gen_name](...json_data.payload);
+    const data = CanvasData[element_id] ?? {}; 
+    const element = ComponentRegistry[json_data.gen_name](
+     ...[
+            {
+                ...json_data.payload[0], 
+                element_id,
+                ...data 
+            }
+        ]
+    );
     element.id = element_id;
     if(json_data.style) element.style = json_data.style;
     const parentEle = document.getElementById(parent_id);
@@ -56,6 +64,8 @@ const RenderInCanvasExV2 = (element_id)=> {
 }
 
 function exportDomTreeV2(id) {
+    const resultPre = document.getElementById("result")
+    if(resultPre) resultPre.remove();
     const result = document.createElement("div");
     result.id = "result";
     result.style = "width: 100%; height: 100vh;";

@@ -1,4 +1,27 @@
+// Proxy handler to detect changes to the couponData object
+const handler = {
+    set: function(target, key, value) {
+      if (target[key] !== value) {  // Only update if the value has changed
+        target[key] = value;        // Update the target object
+        // console.log(value);
+        exportDomTreeV2("element-0")
+        // updateDOM(key, value);      // Call the function to update the DOM
+      }
+      return true;
+    }
+};
+
+// Create a proxy to wrap the couponData object
 const CanvasJSON = {}
+const CanvasData = new Proxy({}, handler); // to make event based updates in 
+
+setTimeout(()=> {
+    CanvasData["element-1"] = {
+        "content": "This is the content of the card. but controlled",
+        "parentId": "element-0",
+        "title": "Card Title"
+    }
+}, 15000)
 
 const findElementInJsonAndReturn = (parent_id, CJson)=> {
     if(parent_id == null || parent_id == undefined) {
